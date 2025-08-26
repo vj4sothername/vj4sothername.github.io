@@ -6,125 +6,230 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/png" href="https://static-cdn.jtvnw.net/jtv_user_pictures/3193dba8-bd12-487a-a3cc-1d90337eb317-profile_image-70x70.png" />
   <style>
-    /* Minimal, full-screen, no card */
     :root {
-      --fg: #111;
-      --muted: #555;
-      --bg: #fff;
-      --link: #111;
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #111111;
     }
     @media (prefers-color-scheme: dark) {
       :root {
+        --bg: #0b0f18;
         --fg: #e5e7eb;
         --muted: #9aa4b2;
-        --bg: #0b0f18;
-        --link: #e5e7eb;
+        --line: #1f2937;
+        --accent: #e5e7eb;
       }
     }
 
-    html, body {
-      height: 100%;
-    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       margin: 0;
       background: var(--bg);
       color: var(--fg);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
     }
 
-    .wrap {
-      box-sizing: border-box;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 8vh 24px 20vh; /* lots of whitespace like the example */
+    /* Two-column layout: content left, sidebar right */
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      min-height: 100vh;
     }
 
-    /* Top row: small avatar + big name (no card) */
-    .top {
+    /* Main reading area (left) */
+    main.content {
+      padding: 6vh clamp(16px, 4vw, 44px) 12vh;
+      max-width: 78ch;
+    }
+    .section { margin: 0 0 56px 0; }
+    .section h2 {
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      line-height: 1.2;
+      margin: 0 0 12px 0;
+    }
+    .section p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--fg);
+      margin: 0 0 1rem 0;
+    }
+    .section ul { margin: 0 0 1rem 1.2rem; }
+    .section a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+    /* Right-hand sidebar (sticky full-height bar) */
+    aside.sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-left: 1px solid var(--line);
+      padding: 24px 24px 32px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
       gap: 14px;
-      margin-bottom: 10px;
+      background: var(--bg);
     }
     .avatar {
-      width: 64px;
-      height: 64px;
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       display: block;
     }
-
-    h1 {
-      font-size: clamp(2.2rem, 6vw, 3.6rem);
+    .name {
+      font-size: clamp(1.6rem, 3vw, 2rem);
       line-height: 1.1;
-      margin: 0;
+      margin: 4px 0 0 0;
+      font-weight: 800;
       letter-spacing: -0.02em;
-      font-weight: 800; /* bold like the reference */
     }
-
     .tagline {
-      margin: 10px 0 24px 0;
+      margin: 0 0 10px 0;
       color: var(--muted);
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      line-height: 1.5;
+      font-size: 0.98rem;
     }
 
-    .links {
+    /* Index (table of contents) */
+    nav.toc {
       display: flex;
-      gap: 22px;
-      margin-bottom: 28px;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
     }
-    .links a {
-      color: var(--link);
+    nav.toc a {
+      color: var(--accent);
       text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color .15s ease, opacity .15s ease;
-      opacity: 0.9;
+      opacity: 0.85;
+      border-left: 2px solid transparent;
+      padding-left: 8px;
+      transition: opacity .15s, border-color .15s;
     }
-    .links a:hover {
-      border-bottom-color: currentColor;
+    nav.toc a:hover { opacity: 1; }
+    nav.toc a[aria-current="true"] {
+      border-left-color: var(--accent);
       opacity: 1;
     }
 
-    .content {
-      margin-top: 18px;
-      max-width: 65ch; /* comfortable reading width */
+    /* Optional social (kept minimal, text only) */
+    .social {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
-    .content p {
-      margin: 0 0 1rem 0;
-      color: var(--fg);
+    .social a {
+      color: var(--accent);
+      text-decoration: none;
+      opacity: 0.9;
+    }
+    .social a:hover { opacity: 1; }
+
+    /* Mobile: sidebar becomes a top bar */
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      aside.sidebar {
+        position: static;
+        height: auto;
+        width: 100%;
+        border-left: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 16px clamp(16px, 4vw, 24px);
+        flex-direction: row;
+        align-items: center;
+        gap: 14px 18px;
+        flex-wrap: wrap;
+      }
+      .name { margin: 0; }
+      .tagline { margin: 0; }
+      nav.toc {
+        margin-left: auto;
+        flex-direction: row;
+        gap: 14px;
+      }
+      nav.toc a { border-left: 0; padding-left: 0; }
+      .social {
+        width: 100%;
+        margin-top: 6px;
+        flex-direction: row;
+        gap: 14px;
+      }
+      main.content {
+        padding: 18px clamp(16px, 4vw, 24px) 60px;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <div class="top">
+  <div class="layout">
+    <main class="content" id="content">
+      <section id="about" class="section">
+        <h2>About me</h2>
+        <p>
+          Write about yourself here. What you do, what you enjoy building, and anything you want people to know.
+        </p>
+        <p>
+          Keep it simple and readable. You can add as many paragraphs as you like.
+        </p>
+      </section>
+
+      <section id="f1-project" class="section">
+        <h2>F1 Project</h2>
+        <p>
+          Describe your F1 project here — goals, stack, and what you’re building.
+        </p>
+        <ul>
+          <li>Repository: <a href="https://github.com/vj4sothername" target="_blank" rel="noopener">GitHub</a></li>
+          <li>Live demo: add a URL if you have one</li>
+        </ul>
+      </section>
+    </main>
+
+    <aside class="sidebar">
       <img
         class="avatar"
         alt="avatar"
         src="https://static-cdn.jtvnw.net/jtv_user_pictures/3193dba8-bd12-487a-a3cc-1d90337eb317-profile_image-70x70.png"
         draggable="false"
       />
-      <h1>vj4sothername</h1>
-    </div>
+      <h1 class="name">vj4sothername</h1>
+      <p class="tagline">developer, automator, streamer</p>
 
-    <p class="tagline">developer, automator, streamer</p>
+      <nav class="toc" aria-label="Index">
+        <a href="#about">About me</a>
+        <a href="#f1-project">F1 Project</a>
+      </nav>
 
-    <nav class="links">
-      <a href="https://github.com/vj4sothername" target="_blank" rel="noopener">github</a>
-      <a href="https://twitch.tv/vj4sothername" target="_blank" rel="noopener">twitch</a>
-      <!-- add more links if you want (no email shown) -->
-    </nav>
+      <div class="social">
+        <a href="https://github.com/vj4sothername" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://twitch.tv/vj4sothername" target="_blank" rel="noopener">Twitch</a>
+      </div>
+    </aside>
+  </div>
 
-    <!-- Space for text: add as much as you want below -->
-    <section class="content">
-      <p>
-        Put your text here. For example: I build small tools and automations. 
-        Currently learning X, experimenting with Y, and streaming Z.
-      </p>
-      <!-- Add more paragraphs as needed -->
-    </section>
-  </main>
+  <script>
+    // Highlight the active index link while scrolling
+    const tocLinks = Array.from(document.querySelectorAll('nav.toc a'));
+    const sections = tocLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = '#' + entry.target.id;
+        const link = tocLinks.find(a => a.getAttribute('href') === id);
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.removeAttribute('aria-current'));
+          if (link) link.setAttribute('aria-current', 'true');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    sections.forEach(sec => io.observe(sec));
+  </script>
 </body>
 </html>
