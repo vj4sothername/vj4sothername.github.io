@@ -6,12 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/png" href="https://static-cdn.jtvnw.net/jtv_user_pictures/3193dba8-bd12-487a-a3cc-1d90337eb317-profile_image-70x70.png" />
   <style>
+    /* Minimal, no card, right-hand sidebar */
     :root {
       --bg: #ffffff;
       --fg: #111111;
       --muted: #6b7280;
       --line: #e5e7eb;
-      --accent: #111111;
     }
     @media (prefers-color-scheme: dark) {
       :root {
@@ -19,7 +19,6 @@
         --fg: #e5e7eb;
         --muted: #9aa4b2;
         --line: #1f2937;
-        --accent: #e5e7eb;
       }
     }
 
@@ -32,17 +31,16 @@
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      scroll-behavior: smooth;
     }
 
     /* Two-column layout: content left, sidebar right */
     .layout {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 320px;
+      grid-template-columns: minmax(0, 1fr) 300px; /* content | sidebar */
       min-height: 100vh;
     }
 
-    /* Main reading area (left) */
+    /* Left: main content */
     main.content {
       padding: 6vh clamp(16px, 4vw, 44px) 12vh;
       max-width: 78ch;
@@ -53,16 +51,16 @@
       line-height: 1.2;
       margin: 0 0 12px 0;
     }
-    .section p {
+    .section p, .section li {
       font-size: 1.05rem;
       line-height: 1.7;
       color: var(--fg);
-      margin: 0 0 1rem 0;
     }
+    .section p { margin: 0 0 1rem 0; }
     .section ul { margin: 0 0 1rem 1.2rem; }
     .section a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
-    /* Right-hand sidebar (sticky full-height bar) */
+    /* Right: sidebar bar (sticky, full-height) */
     aside.sidebar {
       position: sticky;
       top: 0;
@@ -71,8 +69,8 @@
       padding: 24px 24px 32px;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
       gap: 14px;
+      align-items: flex-start;
       background: var(--bg);
     }
     .avatar {
@@ -88,21 +86,16 @@
       font-weight: 800;
       letter-spacing: -0.02em;
     }
-    .tagline {
-      margin: 0 0 10px 0;
-      color: var(--muted);
-      font-size: 0.98rem;
-    }
 
-    /* Index (table of contents) */
+    /* Index links */
     nav.toc {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 6px;
+      margin-top: 8px;
     }
     nav.toc a {
-      color: var(--accent);
+      color: var(--fg);
       text-decoration: none;
       opacity: 0.85;
       border-left: 2px solid transparent;
@@ -111,29 +104,13 @@
     }
     nav.toc a:hover { opacity: 1; }
     nav.toc a[aria-current="true"] {
-      border-left-color: var(--accent);
+      border-left-color: var(--fg);
       opacity: 1;
     }
 
-    /* Optional social (kept minimal, text only) */
-    .social {
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .social a {
-      color: var(--accent);
-      text-decoration: none;
-      opacity: 0.9;
-    }
-    .social a:hover { opacity: 1; }
-
     /* Mobile: sidebar becomes a top bar */
     @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
+      .layout { grid-template-columns: 1fr; }
       aside.sidebar {
         position: static;
         height: auto;
@@ -142,24 +119,16 @@
         border-bottom: 1px solid var(--line);
         padding: 16px clamp(16px, 4vw, 24px);
         flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
         gap: 14px 18px;
-        flex-wrap: wrap;
       }
-      .name { margin: 0; }
-      .tagline { margin: 0; }
       nav.toc {
         margin-left: auto;
         flex-direction: row;
         gap: 14px;
       }
       nav.toc a { border-left: 0; padding-left: 0; }
-      .social {
-        width: 100%;
-        margin-top: 6px;
-        flex-direction: row;
-        gap: 14px;
-      }
       main.content {
         padding: 18px clamp(16px, 4vw, 24px) 60px;
       }
@@ -199,37 +168,12 @@
         draggable="false"
       />
       <h1 class="name">vj4sothername</h1>
-      <p class="tagline">developer, automator, streamer</p>
 
       <nav class="toc" aria-label="Index">
         <a href="#about">About me</a>
         <a href="#f1-project">F1 Project</a>
       </nav>
-
-      <div class="social">
-        <a href="https://github.com/vj4sothername" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://twitch.tv/vj4sothername" target="_blank" rel="noopener">Twitch</a>
-      </div>
     </aside>
   </div>
-
-  <script>
-    // Highlight the active index link while scrolling
-    const tocLinks = Array.from(document.querySelectorAll('nav.toc a'));
-    const sections = tocLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const id = '#' + entry.target.id;
-        const link = tocLinks.find(a => a.getAttribute('href') === id);
-        if (entry.isIntersecting) {
-          tocLinks.forEach(l => l.removeAttribute('aria-current'));
-          if (link) link.setAttribute('aria-current', 'true');
-        }
-      });
-    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-
-    sections.forEach(sec => io.observe(sec));
-  </script>
 </body>
 </html>
