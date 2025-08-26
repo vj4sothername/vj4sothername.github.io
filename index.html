@@ -1,26 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>vj4sothername</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" href="https://static-cdn.jtvnw.net/jtv_user_pictures/3193dba8-bd12-487a-a3cc-1d90337eb317-profile_image-70x70.png">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="https://static-cdn.jtvnw.net/jtv_user_pictures/3193dba8-bd12-487a-a3cc-1d90337eb317-profile_image-70x70.png" />
+  <style>
+    /* Minimal, full-screen, no card */
+    :root {
+      --fg: #111;
+      --muted: #555;
+      --bg: #fff;
+      --link: #111;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fg: #e5e7eb;
+        --muted: #9aa4b2;
+        --bg: #0b0f18;
+        --link: #e5e7eb;
+      }
+    }
+
+    html, body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .wrap {
+      box-sizing: border-box;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 8vh 24px 20vh; /* lots of whitespace like the example */
+    }
+
+    /* Top row: small avatar + big name (no card) */
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: block;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      line-height: 1.1;
+      margin: 0;
+      letter-spacing: -0.02em;
+      font-weight: 800; /* bold like the reference */
+    }
+
+    .tagline {
+      margin: 10px 0 24px 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      line-height: 1.5;
+    }
+
+    .links {
+      display: flex;
+      gap: 22px;
+      margin-bottom: 28px;
+    }
+    .links a {
+      color: var(--link);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .15s ease, opacity .15s ease;
+      opacity: 0.9;
+    }
+    .links a:hover {
+      border-bottom-color: currentColor;
+      opacity: 1;
+    }
+
+    .content {
+      margin-top: 18px;
+      max-width: 65ch; /* comfortable reading width */
+    }
+    .content p {
+      margin: 0 0 1rem 0;
+      color: var(--fg);
+    }
+  </style>
 </head>
 <body>
-  <div class="main">
-    <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/3193dba8-bd12-487a-a3cc-1d90337eb317-profile_image-70x70.png" alt="avatar" class="avatar" draggable="false">
-    <h1>vj4sothername</h1>
-    <p class="desc">developer, automator, streamer</p>
-    <div class="links">
-      <a href="https://github.com/vj4sothername" aria-label="GitHub" target="_blank">
-        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297C5.373.297 0 5.67 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.011-1.04-.017-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.206.085 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.304.762-1.605-2.665-.304-5.466-1.334-5.466-5.932 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.323 3.301 1.23.957-.266 1.983-.398 3.003-.403 1.02.005 2.047.137 3.006.403 2.289-1.553 3.295-1.23 3.295-1.23.653 1.653.242 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.804 5.625-5.475 5.921.43.371.823 1.102.823 2.222 0 1.606-.014 2.902-.014 3.293 0 .32.216.694.825.576C20.565 21.797 24 17.298 24 12c0-6.33-5.373-11.703-12-11.703z"/></svg>
-      </a>
-      <a href="https://twitch.tv/vj4sothername" aria-label="Twitch" target="_blank">
-        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M2.857 0L.429 4.286v17.143h5.142V24h3.429l3.429-2.571h4.286L23.143 17.14V0H2.857zm17.143 15.429l-2.572 2.571h-4.286l-3.428 2.572v-2.572H3.429V1.714h16.571v13.715z"/><path d="M15.429 5.143h1.714v6.857h-1.714zM11.143 5.143h1.714v6.857h-1.714z"/></svg>
-      </a>
+  <main class="wrap">
+    <div class="top">
+      <img
+        class="avatar"
+        alt="avatar"
+        src="https://static-cdn.jtvnw.net/jtv_user_pictures/3193dba8-bd12-487a-a3cc-1d90337eb317-profile_image-70x70.png"
+        draggable="false"
+      />
+      <h1>vj4sothername</h1>
     </div>
-  </div>
+
+    <p class="tagline">developer, automator, streamer</p>
+
+    <nav class="links">
+      <a href="https://github.com/vj4sothername" target="_blank" rel="noopener">github</a>
+      <a href="https://twitch.tv/vj4sothername" target="_blank" rel="noopener">twitch</a>
+      <!-- add more links if you want (no email shown) -->
+    </nav>
+
+    <!-- Space for text: add as much as you want below -->
+    <section class="content">
+      <p>
+        Put your text here. For example: I build small tools and automations. 
+        Currently learning X, experimenting with Y, and streaming Z.
+      </p>
+      <!-- Add more paragraphs as needed -->
+    </section>
+  </main>
 </body>
 </html>
